@@ -61,7 +61,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors()
             .and()
-            .csrf().ignoringAntMatchers("/h2-console/**") // Disable CSRF for H2
+            .csrf().ignoringAntMatchers("/h2-console/**","/swagger-ui/**") // Disable CSRF for H2
             .and()
             .headers().frameOptions().disable() // Allow H2 UI
             .and()
@@ -71,7 +71,17 @@ public class WebSecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/user/login", "/user/refreshToken", "/user/register", 
-                         "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**")
+                         "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**","/swagger-ui/**", 
+                         "/v3/api-docs/**", 
+                         "/swagger-ui.html", 
+                         "/swagger-ui/**", 
+                         "/v3/api-docs/**", 
+                         "/swagger-resources/**", 
+                         "/webjars/**", 
+                         "/user/login", 
+                         "/user/refreshToken", 
+                         "/user/register", 
+                         "/h2-console/**")
             .permitAll()
             .anyRequest()
             .authenticated();
