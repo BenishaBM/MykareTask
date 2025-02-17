@@ -2,6 +2,7 @@ package com.mykare.user_management.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import com.mykare.user_management.security.UserDetailsImpl;
 import com.mykare.user_management.security.jwt.JwtResponse;
 import com.mykare.user_management.security.jwt.JwtUtils;
 import com.mykare.user_management.service.UserService;
+import com.mykare.user_management.service.serviceImpl.LocationService;
 import com.mykare.user_management.webModel.UserWebModel;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,13 +54,20 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+    @Autowired
+    private LocationService locationService;
 
 	@PostMapping("register")
 	@Operation(summary = "Register a new user")
-	public ResponseEntity<?> userRegister(@RequestBody UserWebModel userWebModel) {
+	public ResponseEntity<?> userRegister(@RequestBody UserWebModel userWebModel,HttpServletRequest request) {
 		try {
 			logger.info("User register controller start");
-			return userService.register(userWebModel);
+			 String ipAddress = request.getRemoteAddr();
+		        if ("0:0:0:0:0:0:0:1".equals(ipAddress) || "127.0.0.1".equals(ipAddress)) {
+		            ipAddress = locationService.getIpAddress();
+		        }
+			return userService.register(userWebModel,ipAddress);
 		} catch (Exception e) {
 			logger.error("userRegister Method Exception {}" + e);
 			e.printStackTrace();

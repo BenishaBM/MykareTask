@@ -219,10 +219,12 @@ public class UserServiceTest {
         newUserWebModel.setUserType("USER");
         newUserWebModel.setPassword("password123");
 
+        String ipAddress = "192.168.1.1";
+
         when(userRepository.findByEmailId("newuser@example.com")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password123")).thenReturn("encodedPassword");
 
-        ResponseEntity<?> response = userService.register(newUserWebModel);
+        ResponseEntity<?> response = userService.register(newUserWebModel, ipAddress);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -238,6 +240,7 @@ public class UserServiceTest {
 
     @Test
     void testRegister_EmailAlreadyExists() {
+        // Mock existing user input
         UserWebModel existingUserWebModel = new UserWebModel();
         existingUserWebModel.setUserName("Existing User");
         existingUserWebModel.setEmailId("user@example.com");
@@ -245,10 +248,15 @@ public class UserServiceTest {
         existingUserWebModel.setUserType("USER");
         existingUserWebModel.setPassword("password123");
 
+        String ipAddress = "192.168.1.1";  // Add this missing parameter
+
+        // Mock repository to return existing user
         when(userRepository.findByEmailId("user@example.com")).thenReturn(Optional.of(normalUser));
 
-        ResponseEntity<?> response = userService.register(existingUserWebModel);
+        // Execute method with ipAddress
+        ResponseEntity<?> response = userService.register(existingUserWebModel, ipAddress);
 
+        // Validate response
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertTrue(response.getBody() instanceof Response);
@@ -258,6 +266,8 @@ public class UserServiceTest {
         assertEquals("fail", responseBody.getMessage());
         assertEquals("Email already in use. Please use a different email.", responseBody.getData());
 
+        // Verify save was never called
         verify(userRepository, never()).save(any(User.class));
     }
+
 }

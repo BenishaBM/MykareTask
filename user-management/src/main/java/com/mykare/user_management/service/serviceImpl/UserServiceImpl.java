@@ -21,9 +21,12 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	UserRepository userRepository;
+	
+    @Autowired
+    private LocationService locationService;
 
 	@Override
-	public ResponseEntity<?> register(UserWebModel userWebModel) {
+	public ResponseEntity<?> register(UserWebModel userWebModel,String ipAddress) {
 	    // Check if email already exists
 	    Optional<User> existingUser = userRepository.findByEmailId(userWebModel.getEmailId());
 	    if (existingUser.isPresent()) {
@@ -36,6 +39,11 @@ public class UserServiceImpl implements UserService{
 	    newUser.setEmailId(userWebModel.getEmailId());
 	    newUser.setGender(userWebModel.getGender());
 	    newUser.setUserType(userWebModel.getUserType());
+        // Set IP address
+	    newUser.setIpAddress(ipAddress);
+        
+        // Get country from IP
+	    newUser.setCountry(locationService.getCountryFromIp(ipAddress));
 
 	    // Encrypt password before saving
 	    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

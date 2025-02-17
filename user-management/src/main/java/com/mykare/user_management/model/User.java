@@ -68,6 +68,12 @@ public class User {
 	
 	@Column(name = "userType")
 	private String userType;
+	
+	@Column(name = "ipAddress")
+    private String ipAddress;
+    
+	@Column(name = "country")
+    private String country;
 
 	
 

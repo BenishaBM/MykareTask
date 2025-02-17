@@ -2,6 +2,8 @@ package com.mykare.user_management.webModel;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,5 +29,7 @@ public class UserWebModel {
 	private String userName;
 	private String gender;
 	private String userType;
+    private String ipAddress;
+    private String country;
 
 }
