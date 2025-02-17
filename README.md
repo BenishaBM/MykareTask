@@ -55,7 +55,7 @@ docker run -p 8080:8080 user-registration-api
 
 ## API Documentation
 
-Swagger UI is available at: [http://localhost:8080/swagger-ui/](http://localhost:8080/swagger-ui/)
+Swagger UI is available at: [http://localhost:9090/swagger-ui/](http://localhost:9090/swagger-ui/)
 
 ## API Endpoints
 
@@ -84,7 +84,7 @@ mvn test
 ## Notes
 
 - The application uses an in-memory H2 database for development.
-- The H2 console is available at: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+- The H2 console is available at: [http://localhost:9090/h2-console](http://localhost:9090/h2-console)
 - Database credentials:
   - JDBC URL: `jdbc:h2:mem:testdb`
   - Username: `sa`
